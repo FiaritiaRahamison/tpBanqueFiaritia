@@ -17,30 +17,31 @@
             <ui:define name="content">
                 <h1>Liste des comptes bancaires</h1>
                 <h:form>
-                    <p:dataTable value="#{listeComptes.allComptes}" 
+                    <p:dataTable value="#{listeComptes.allComptes}"
                                  var="compte"
                                  paginator="true"
                                  rows="10"
+                                 tableStyle="width:auto" 
                                  widgetVar="comptesTable"
                                  emptyMessage="Aucun compte avec ce critère"
                                  rowsPerPageTemplate="2,4,8,10"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                        <p:column>
+                        <p:column sortBy="#{compte.id}"  width="50">
                             <f:facet name="header">
                                 <h:outputText value="Id"/>
                             </f:facet>
                             <h:outputText value="#{compte.id}"/>
                         </p:column>
 
-                        <p:column>
+                        <p:column sortBy="#{compte.nom}" filterBy="#{compte.nom}" filterMatchMode="contains" width="300">
                             <f:facet name="header">
                                 <h:outputText value="Nom"/>
                             </f:facet>
                             <h:outputText value="#{compte.nom}"/>
                         </p:column>
 
-                        <p:column>
+                        <p:column sortBy="#{compte.solde}" style="text-align:right;"  width="80">
                             <f:facet name="header">
                                 <h:outputText value="Solde"/>
                             </f:facet>

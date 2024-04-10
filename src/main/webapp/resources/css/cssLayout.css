@@ -1,7 +1,7 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
+    background-color: #004304;
     color: white;
     padding: 5px;
     margin: 0px 0px 10px 0px;
@@ -16,7 +16,7 @@
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: #0043047d;
     padding: 5px;
     width: 150px;
 }
@@ -58,4 +58,8 @@
   text-decoration : underline;
 }
 
-
+#content {
+    position: relative;
+    background-color: #ffffff;
+    padding: 5px;
+}
