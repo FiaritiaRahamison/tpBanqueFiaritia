@@ -8,6 +8,7 @@ import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -55,7 +56,7 @@ public class GestionnaireCompte {
      *
      * @return List
      */
-    List<CompteBancaire> getAllComptes() {
+    public List<CompteBancaire> getAllComptes() {
         TypedQuery<CompteBancaire> query
                 = em.createNamedQuery("CompteBancaire.findAll",
                         CompteBancaire.class);
