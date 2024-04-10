@@ -4,10 +4,14 @@
  */
 package mg.itu.fiaritia.tpbanquefiaritia.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -15,14 +19,19 @@ import java.io.Serializable;
  * @author raham
  */
 @Entity
+@Table(name = "comptebancaire")
+@NamedQueries({
+    @NamedQuery(name = "CompteBancaire.findAll", query = "SELECT cb FROM comptebancaire cb")})
 public class CompteBancaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
-
+    @Column(name = "NOM")
     private String nom;
+    @Column(name = "SOLDE")
     private int solde;
 
     public Long getId() {
