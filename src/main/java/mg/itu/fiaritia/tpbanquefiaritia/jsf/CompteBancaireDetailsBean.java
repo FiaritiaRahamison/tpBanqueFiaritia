@@ -38,7 +38,7 @@ public class CompteBancaireDetailsBean implements Serializable {
             loadCompteBancaire(); // Charge le compte bancaire lors de l'initialisation si l'ID est présent
         }
     }
-    
+
     public int getId() {
         return id;
     }
@@ -54,10 +54,10 @@ public class CompteBancaireDetailsBean implements Serializable {
     public void setSuccessMessage(String successMessage) {
         this.successMessage = successMessage;
     }
-     
+
     /**
-     * Retourne les détails du compte courant (contenu dans l'attribut compteBancaire
-     * de cette classe).
+     * Retourne les détails du compte courant (contenu dans l'attribut
+     * compteBancaire de cette classe).
      *
      * @return CompteBancaire
      */
@@ -76,25 +76,35 @@ public class CompteBancaireDetailsBean implements Serializable {
 
     /**
      * Afficher les détails d'un compte bancaire choisi.
+     *
      * @return String
      */
     public String afficher() {
-        return "compteBancaireDetails?id="+id+"&faces-redirect=true";
+        return "compteBancaireDetails?id=" + id + "&faces-redirect=true";
     }
-    
+
     /**
      * Modifier un compte.
+     *
      * @return String
      */
     public String updateCompteBancaire() {
+        FacesMessage message = null;
         LOGGER.info("=============================");
         LOGGER.info(compteBancaire.toString());
         LOGGER.info("=============================");
-        compteBancaire = gestionnaireCompte.updateCompteBancaire(compteBancaire);
-        successMessage = "Le compte bancaire a été mis à jour avec succès.";
+        
+        if (compteBancaire.getNom().length() != 0) {
+            compteBancaire = gestionnaireCompte.updateCompteBancaire(compteBancaire);
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Modification réussie.", null);
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Echec de la modification, remplir le champ `nom`.", null);
+        }
+        
+        FacesContext.getCurrentInstance().addMessage(null, message);
         return "listeComptes";
     }
-    
+
     /**
      * Creates a new instance of CustomerDetailsBean
      */

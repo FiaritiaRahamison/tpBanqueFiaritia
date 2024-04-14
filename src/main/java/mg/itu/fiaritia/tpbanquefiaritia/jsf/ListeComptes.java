@@ -49,7 +49,6 @@ public class ListeComptes implements Serializable {
      * Supprime un compte après avoir cliqué sur l'icone supprimer de la liste.
      * 
      * @param compteBancaire
-     * @return 
      */
     public void supprimerCompte(CompteBancaire compteBancaire) {
         FacesMessage message = null;
