@@ -59,9 +59,11 @@ public class CompteBancaire implements Serializable {
         this.solde = solde;
     }
 
-    public CompteBancaire() {    
-    } /* Obligatoire */
-    
+    public CompteBancaire() {
+    }
+
+    /* Obligatoire */
+
     public CompteBancaire(String nom, int solde) {
         this.nom = nom;
         this.solde = solde;
@@ -101,7 +103,7 @@ public class CompteBancaire implements Serializable {
 
     @Override
     public String toString() {
-        return "mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire[ id=" + id + " , nom=" + nom + ", solde= " + solde +"]";
+        return "mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire[ id=" + id + " , nom=" + nom + ", solde= " + solde + "]";
     }
 
 }

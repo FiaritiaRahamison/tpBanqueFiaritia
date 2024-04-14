@@ -23,9 +23,10 @@ import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 public class ListeComptes implements Serializable {
 
     private List<CompteBancaire> allComptes;
+    
     @Inject
     private GestionnaireCompte gestionnaireCompte;
-    
+        
     /**
      * Creates a new instance of ListeComptes
      */
@@ -44,6 +45,12 @@ public class ListeComptes implements Serializable {
         return allComptes;
     }
     
+    /**
+     * Supprime un compte après avoir cliqué sur l'icone supprimer de la liste.
+     * 
+     * @param compteBancaire
+     * @return 
+     */
     public String supprimerCompte(CompteBancaire compteBancaire) {
         // Logique de suppression du compte
         compteBancaire = gestionnaireCompte.findById(compteBancaire.getId());
@@ -54,4 +61,5 @@ public class ListeComptes implements Serializable {
         
         return "listeComptes?faces-redirect=true";
     }
+    
 }

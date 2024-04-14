@@ -99,4 +99,12 @@ public class GestionnaireCompte {
     public void persist(CompteBancaire compteBancaire) {
         em.persist(compteBancaire);
     }
+    
+    @Transactional
+    public void transfererArgent(CompteBancaire compteSource, CompteBancaire compteDestinataire, int solde) {
+        compteSource.retirer(solde);
+        compteDestinataire.deposer(solde);
+        updateCompteBancaire(compteSource);
+        updateCompteBancaire(compteDestinataire);
+    }
 }
