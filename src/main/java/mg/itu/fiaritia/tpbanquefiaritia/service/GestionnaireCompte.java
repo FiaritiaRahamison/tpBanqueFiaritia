@@ -88,4 +88,15 @@ public class GestionnaireCompte {
         compteBancaire = em.merge(compteBancaire);
         em.remove(compteBancaire);
     }
+    
+    /**
+     * Fait une nouvelle insertion: génèrera un INSERT SQL dans la base de
+     * données
+     *
+     * @param compteBancaire
+     */
+    @Transactional
+    public void persist(CompteBancaire compteBancaire) {
+        em.persist(compteBancaire);
+    }
 }
