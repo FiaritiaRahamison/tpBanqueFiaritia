@@ -4,10 +4,12 @@
  */
 package mg.itu.fiaritia.tpbanquefiaritia.jsf;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import java.util.logging.Logger;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 
@@ -17,15 +19,24 @@ import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
  * @author raham
  */
 @Named(value = "compteBancaireDetailsBean")
-@RequestScoped
+@ViewScoped
 public class CompteBancaireDetailsBean implements Serializable {
 
     private int id;
     private CompteBancaire compteBancaire;
-    
+    private String successMessage; // Message de succès
+    private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
+
     @Inject
     private GestionnaireCompte gestionnaireCompte;
 
+    @PostConstruct
+    public void init() {
+        if (id != 0) {
+            loadCompteBancaire(); // Charge le compte bancaire lors de l'initialisation si l'ID est présent
+        }
+    }
+    
     public int getId() {
         return id;
     }
@@ -34,6 +45,14 @@ public class CompteBancaireDetailsBean implements Serializable {
         this.id = id;
     }
 
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+     
     /**
      * Retourne les détails du compte courant (contenu dans l'attribut compteBancaire
      * de cette classe).
@@ -48,7 +67,9 @@ public class CompteBancaireDetailsBean implements Serializable {
      * Charger les détails d'un compte donné
      */
     public void loadCompteBancaire() {
+         LOGGER.info("Chargement du compte bancaire avec l'ID : " + id);
         this.compteBancaire = gestionnaireCompte.findById(id);
+        LOGGER.info("Compte bancaire chargé avec succès : " + compteBancaire.toString());
     }
 
     /**
@@ -59,6 +80,18 @@ public class CompteBancaireDetailsBean implements Serializable {
         return "compteBancaireDetails?id="+id+"&faces-redirect=true";
     }
     
+    /**
+     * Modifier un compte.
+     * @return String
+     */
+    public String updateCompteBancaire() {
+        LOGGER.info("=============================");
+        LOGGER.info(compteBancaire.toString());
+        LOGGER.info("=============================");
+        compteBancaire = gestionnaireCompte.updateCompteBancaire(compteBancaire);
+        successMessage = "Le compte bancaire a été mis à jour avec succès.";
+        return "listeComptes";
+    }
     /**
      * Creates a new instance of CustomerDetailsBean
      */

@@ -101,7 +101,7 @@ public class CompteBancaire implements Serializable {
 
     @Override
     public String toString() {
-        return "mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire[ id=" + id + " ]";
+        return "mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire[ id=" + id + " , nom=" + nom + ", solde= " + solde +"]";
     }
 
 }

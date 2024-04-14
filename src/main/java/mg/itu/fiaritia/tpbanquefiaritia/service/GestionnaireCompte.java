@@ -8,7 +8,6 @@ import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -70,5 +69,16 @@ public class GestionnaireCompte {
      */
     public CompteBancaire findById(int id) {
         return em.find(CompteBancaire.class, id);
+    }
+    
+    /**
+     * Modification d'un customer Génèrera un UPDATE SQL
+     *
+     * @param compteBancaire
+     * @return CompteBancaire
+     */
+    @Transactional
+    public CompteBancaire updateCompteBancaire(CompteBancaire compteBancaire) {
+        return em.merge(compteBancaire);
     }
 }

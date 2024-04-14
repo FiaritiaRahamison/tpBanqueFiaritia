@@ -11,26 +11,28 @@
 
             <ui:define name="metadata">
                 <f:metadata>
-                    <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}"/>
-                    <f:event type="preRenderView" listener="#{compteBancaireDetailsBean.loadCompteBancaire()}" />
+                    <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}" required="true"/>
+                    <f:viewAction action="#{compteBancaireDetailsBean.loadCompteBancaire}" />
                 </f:metadata>
             </ui:define>
 
             <ui:define name="content">
                 <f:view>
-                    <h:form rendered="#{compteBancaireDetailsBean != null}">
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}">
                         <h1><h:outputText value="Create/Edit"/></h1>
-                        <h:panelGrid columns="2" >
+                        <h:panelGrid columns="2">
                             <h:outputLabel value="Id:" for="id" />
-                            <h:inputText id="id" value="#{compteBancaireDetailsBean.id}" title="Id" required="true" requiredMessage="The id field is required." readonly="true"/>
+                            <h:inputText id="id" value="#{compteBancaireDetailsBean.compteBancaire.id}" title="Id" required="true" requiredMessage="The id field is required." readonly="true"/>
                             <h:outputLabel value="Nom:" for="nom" />
                             <h:inputText id="nom" value="#{compteBancaireDetailsBean.compteBancaire.nom}" title="Nom" />
                             <h:outputLabel value="Solde:" for="solde" />
-                            <h:inputText id="solde" value="#{compteBancaireDetailsBean.compteBancaire.solde}" title="Solde" />
+                            <h:inputText id="solde" value="#{compteBancaireDetailsBean.compteBancaire.solde}" title="Solde" readonly="true"/>
                         </h:panelGrid>
+                        <p><h:commandButton value="Enregistrer la modification" action="#{compteBancaireDetailsBean.updateCompteBancaire}" /></p>
                     </h:form>
 
                     <h:outputText value="Aucun compte n'a été trouvé avec cet ID #{compteBancaireDetailsBean.id} !" rendered="#{compteBancaireDetailsBean.compteBancaire == null}" />
+                    
                     <p><h:button id="back" value="Revenir à la liste" outcome="listeComptes"/></p>
 
                 </f:view>
