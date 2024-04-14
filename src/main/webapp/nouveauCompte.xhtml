@@ -8,7 +8,12 @@
     <body>
 
         <ui:composition template="./WEB-INF/templates/default_template.xhtml">
-
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewParam name="titre" value="Nouveau compte"/>
+                </f:metadata>
+            </ui:define>
+            
             <ui:define name="content">
                 <f:view>
                     <h:form id="nouveauCompte">
@@ -18,11 +23,11 @@
                             <h:inputText id="nom" value="#{ajouterCompte.nom}" title="Nom"/>
                             <h:outputLabel value="Solde:" for="solde" />
                             <h:inputText id="solde" value="#{ajouterCompte.solde}" title="Solde" 
-                                          validatorMessage="Veuillez saisir un solde positif."/>
+                                         validatorMessage="Veuillez saisir un solde positif."/>
                         </h:panelGrid>
-                        
+
                         <p><h:commandButton value="Enregistrer" action="#{ajouterCompte.nouveauCompte}" /></p>
-                        
+
                         <h:messages/>
                     </h:form>
 

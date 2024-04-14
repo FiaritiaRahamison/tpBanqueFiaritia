@@ -18,14 +18,14 @@
     float: left;
     background-color: #0043047d;
     padding: 5px;
-    width: 150px;
+    width: 250px;
 }
 
 #right {
     float: right;
     background-color: #ece3a5;
     padding: 5px;
-    width: 150px;
+    width: 280px;
 }
 
 .center_content {
@@ -37,7 +37,7 @@
 .left_content {
     background-color: #dddddd;
     padding: 5px;
-    margin-left: 170px;
+    margin-left: 300px;
 }
 
 .right_content {
