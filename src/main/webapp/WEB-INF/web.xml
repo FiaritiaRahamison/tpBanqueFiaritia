@@ -13,6 +13,14 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Validation Servlet</servlet-name>
+        <servlet-class>org.apache.myfaces.ee6.validation.servlet.ValidatorProxyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Validation Servlet</servlet-name>
+        <url-pattern>/javax.faces.validator/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
