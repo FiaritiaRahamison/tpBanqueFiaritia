@@ -69,7 +69,6 @@ public class TransfertArgent {
 
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         CompteBancaire compteDestinataire = gestionnaireCompte.findById(idCompteDestinataire);
-        LOGGER.info("==================NULL VE: " + compteSource + "==============");
         if (compteSource != null && compteDestinataire != null && montant <= compteSource.getSolde()) {
             LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
             LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");

@@ -51,15 +51,18 @@ public class ListeComptes implements Serializable {
      * @param compteBancaire
      * @return 
      */
-    public String supprimerCompte(CompteBancaire compteBancaire) {
-        // Logique de suppression du compte
+    public void supprimerCompte(CompteBancaire compteBancaire) {
+        FacesMessage message = null;
+        
         compteBancaire = gestionnaireCompte.findById(compteBancaire.getId());
         if (compteBancaire != null) {
             gestionnaireCompte.supprimerCompte(compteBancaire);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compte supprimé avec succès", null));
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Supprimé avec succès.", null);
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Actualiser la page et réessayer.", null);
         }
-        
-        return "listeComptes?faces-redirect=true";
+       
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
 }
