@@ -62,4 +62,13 @@ public class GestionnaireCompte {
                         CompteBancaire.class);
         return query.getResultList();
     }
+    
+    /**
+     * Rechercher un compte bancaire suivant son identifiant
+     * @param id
+     * @return CompteBancaire
+     */
+    public CompteBancaire findById(int id) {
+        return em.find(CompteBancaire.class, id);
+    }
 }

@@ -9,7 +9,13 @@
     <body>
 
         <ui:composition template="./WEB-INF/templates/default_template.xhtml">
-
+            
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}"/>
+                </f:metadata>
+            </ui:define>
+            
             <ui:define name="top">
                 Liste des comptes bancaires
             </ui:define>
@@ -31,7 +37,10 @@
                             <f:facet name="header">
                                 <h:outputText value="Id"/>
                             </f:facet>
-                            <h:outputText value="#{compte.id}"/>
+                            <h:link value="#{compte.id}" outcome="#{compteBancaireDetailsBean.afficher()}">
+                                <f:param name="id" value="#{compte.id}"/>
+                            </h:link>
+                            
                         </p:column>
 
                         <p:column sortBy="#{compte.nom}" filterBy="#{compte.nom}" filterMatchMode="contains" width="300">

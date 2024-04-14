@@ -21,20 +21,21 @@ import java.io.Serializable;
 @Entity
 @Table(name = "comptebancaire")
 @NamedQueries({
-    @NamedQuery(name = "CompteBancaire.findAll", query = "SELECT cb FROM CompteBancaire cb")})
+    @NamedQuery(name = "CompteBancaire.findAll", query = "SELECT cb FROM CompteBancaire cb"),
+    @NamedQuery(name = "CompteBancaire.findById", query = "SELECT cb FROM CompteBancaire cb where cb.id=:id")})
 public class CompteBancaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private Long id;
+    private Integer id;
     @Column(name = "NOM")
     private String nom;
     @Column(name = "SOLDE")
     private int solde;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
