@@ -11,7 +11,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
 import java.io.Serializable;
-import java.util.logging.Logger;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 
@@ -27,7 +26,6 @@ public class CompteBancaireDetailsBean implements Serializable {
     private int id;
     private CompteBancaire compteBancaire;
     private String successMessage; // Message de succès
-    private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
 
     @Inject
     private GestionnaireCompte gestionnaireCompte;
@@ -69,9 +67,7 @@ public class CompteBancaireDetailsBean implements Serializable {
      * Charger les détails d'un compte donné
      */
     public void loadCompteBancaire() {
-        LOGGER.info("Chargement du compte bancaire avec l'ID : " + id);
         this.compteBancaire = gestionnaireCompte.findById(id);
-        LOGGER.info("Compte bancaire chargé avec succès : " + compteBancaire.toString());
     }
 
     /**
@@ -90,9 +86,6 @@ public class CompteBancaireDetailsBean implements Serializable {
      */
     public String updateCompteBancaire() {
         FacesMessage message = null;
-        LOGGER.info("=============================");
-        LOGGER.info(compteBancaire.toString());
-        LOGGER.info("=============================");
         
         if (compteBancaire.getNom().length() != 0) {
             compteBancaire = gestionnaireCompte.updateCompteBancaire(compteBancaire);

@@ -107,4 +107,16 @@ public class GestionnaireCompte {
         updateCompteBancaire(compteSource);
         updateCompteBancaire(compteDestinataire);
     }
+    
+    @Transactional
+    public void depot(CompteBancaire compteSource, int solde) {
+        compteSource.deposer(solde);
+        updateCompteBancaire(compteSource);
+    }
+    
+    @Transactional
+    public void retrait(CompteBancaire compteSource, int solde) {
+        compteSource.retirer(solde);
+        updateCompteBancaire(compteSource);
+    }
 }
