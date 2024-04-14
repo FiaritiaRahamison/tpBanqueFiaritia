@@ -64,15 +64,11 @@ public class AjouterCompte implements Serializable {
         }
         
         LOGGER.info("================ERREUR: "+ erreur +"==============");
-        /*if (erreur) {
-            return "listeComptes?faces-redirect=true";
-        }*/
-        
        
         CompteBancaire compteBancaire = new CompteBancaire(nom, solde);
         LOGGER.info("Compte bancaire chargé avec succès : " + compteBancaire.toString());
         gestionnaireCompte.creerCompte(compteBancaire);
-        Util.addFlashInfoMessage("OK");
+        Util.addFlashInfoMessage("Compte créé avec succès");
         return "listeComptes?faces-redirect=true";
     }
 }

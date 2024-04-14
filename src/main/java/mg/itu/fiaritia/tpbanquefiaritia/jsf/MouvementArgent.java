@@ -11,6 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.TypeOperation;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
@@ -28,11 +29,13 @@ public class MouvementArgent {
     private int montant;
     private TypeOperation typeOperation;
     private List<TypeOperation> typeOperationValues;
+    private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
     
     @Inject
     private GestionnaireCompte gestionnaireCompte;
 
     public int getIdCompteSource() {
+        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> COMPTE ID: " + String.valueOf(idCompteSource) + " >>>>>>>>>>>>>>>>>>>>>");
         return idCompteSource;
     }
 
@@ -61,6 +64,7 @@ public class MouvementArgent {
     }
 
     public void setTypeOperation(TypeOperation typeOperation) {
+        LOGGER.info("==================ENUM: " + typeOperation.toString() + "==============");
         this.typeOperation = typeOperation;
     }
    
@@ -86,8 +90,14 @@ public class MouvementArgent {
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         CompteBancaire compteDestinataire = gestionnaireCompte.findById(idCompteDestinataire);
         if (compteSource != null && compteDestinataire != null && montant <= compteSource.getSolde()) {
+            LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
+            LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");
+
             gestionnaireCompte.transfererArgent(compteSource, compteDestinataire, montant);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transfert de "+montant+" effectué avec succès de "+compteSource.getNom()+" ID du compte: "+ compteSource.getId()+" vers "+ compteDestinataire.getNom()+" ID du compte: "+ compteDestinataire.getId()+".", null);
+
+            LOGGER.info("==================APRES SENDER: " + compteSource.toString() + "==============");
+            LOGGER.info("================APRES RECEIVER: " + compteDestinataire.toString() + "==============");
         } else if (compteSource != null && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, solde insuffisant.", null);
         } else {
@@ -104,7 +114,9 @@ public class MouvementArgent {
      */
     public String operation() {
         FacesMessage message = null;
+        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> COMPTE ID: " + String.valueOf(idCompteSource) + " >>>>>>>>>>>>>>>>>>>>>");
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
+        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> AVANT OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
         if (typeOperation.equals(TypeOperation.DEPOT)) {
             gestionnaireCompte.depot(compteSource, montant);
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dépot de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
@@ -114,6 +126,7 @@ public class MouvementArgent {
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait échoué, solde insuffisant.", null);
         }
+        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> POST OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
         FacesContext.getCurrentInstance().addMessage(null, message);
         
         return "listeComptes";

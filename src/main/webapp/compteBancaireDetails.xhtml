@@ -20,7 +20,7 @@
             <ui:define name="content">
                 <f:view>
 
-                    <h:form rendered="#{compteBancaireDetailsBean.id != null}" id="operation">
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}" id="operation">
                         <h1><h:outputText value="Déposer ou retirer de l'argent"/></h1>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Type d'opération" for="typeOperation" />
