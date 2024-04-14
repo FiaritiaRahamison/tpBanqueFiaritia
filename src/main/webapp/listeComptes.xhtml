@@ -56,10 +56,21 @@
                             </f:facet>
                             <h:outputText value="#{compte.solde}"/>
                         </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Opérations"/>
+                            </f:facet>
+                            <h:commandLink action="#{listeComptes.supprimerCompte(compte)}">
+                                <h:graphicImage name="images/del.png" />
+                            </h:commandLink>
+                        </p:column>
                     </p:dataTable>
+                    
+                    <h:messages /> 
                 </h:form>
 
-                <h:messages/> 
+
             </ui:define>
 
         </ui:composition>

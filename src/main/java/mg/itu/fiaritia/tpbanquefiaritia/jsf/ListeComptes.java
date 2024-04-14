@@ -4,6 +4,8 @@
  */
 package mg.itu.fiaritia.tpbanquefiaritia.jsf;
 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -42,4 +44,14 @@ public class ListeComptes implements Serializable {
         return allComptes;
     }
     
+    public String supprimerCompte(CompteBancaire compteBancaire) {
+        // Logique de suppression du compte
+        compteBancaire = gestionnaireCompte.findById(compteBancaire.getId());
+        if (compteBancaire != null) {
+            gestionnaireCompte.supprimerCompte(compteBancaire);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Compte supprimé avec succès", null));
+        }
+        
+        return "listeComptes?faces-redirect=true";
+    }
 }

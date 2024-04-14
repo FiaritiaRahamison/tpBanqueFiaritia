@@ -5,6 +5,8 @@
 package mg.itu.fiaritia.tpbanquefiaritia.jsf;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
@@ -67,7 +69,7 @@ public class CompteBancaireDetailsBean implements Serializable {
      * Charger les détails d'un compte donné
      */
     public void loadCompteBancaire() {
-         LOGGER.info("Chargement du compte bancaire avec l'ID : " + id);
+        LOGGER.info("Chargement du compte bancaire avec l'ID : " + id);
         this.compteBancaire = gestionnaireCompte.findById(id);
         LOGGER.info("Compte bancaire chargé avec succès : " + compteBancaire.toString());
     }
@@ -92,6 +94,7 @@ public class CompteBancaireDetailsBean implements Serializable {
         successMessage = "Le compte bancaire a été mis à jour avec succès.";
         return "listeComptes";
     }
+    
     /**
      * Creates a new instance of CustomerDetailsBean
      */
