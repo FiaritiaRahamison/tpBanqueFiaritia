@@ -20,6 +20,7 @@ import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 @Named(value = "transfertArgent")
 @RequestScoped
 public class TransfertArgent {
+
     private int idCompteSource;
     private int idCompteDestinataire;
     private int montant;
@@ -43,7 +44,7 @@ public class TransfertArgent {
     public void setIdCompteDestinataire(int idCompteDestinataire) {
         this.idCompteDestinataire = idCompteDestinataire;
     }
-        
+
     public int getMontant() {
         return montant;
     }
@@ -51,30 +52,39 @@ public class TransfertArgent {
     public void setMontant(int montant) {
         this.montant = montant;
     }
-    
+
     /**
      * Creates a new instance of ListeComptes
      */
     public TransfertArgent() {
     }
-    
+
     /**
-     * Transférer de l'argent d'un compte à un autre.
-     * Le compte source est débité.
-     * Le compte destinataire est crédité.
-     * 
+     * Transférer de l'argent d'un compte à un autre. Le compte source est
+     * débité. Le compte destinataire est crédité.
+     *
      */
     public void transfert() {
-        // Logique de transfert entre les comptes source et destination
+        FacesMessage message = null;
+
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         CompteBancaire compteDestinataire = gestionnaireCompte.findById(idCompteDestinataire);
-        
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transfert effectué avec succès", null);
-        LOGGER.info("==================AVANT SENDER: "+ compteSource.toString() +"==============");
-        LOGGER.info("================AVANT RECEIVER: "+ compteDestinataire.toString() +"==============");
-        gestionnaireCompte.transfererArgent(compteSource, compteDestinataire, montant);
-        LOGGER.info("==================APRES SENDER: "+ compteSource.toString() +"==============");
-        LOGGER.info("================APRES RECEIVER: "+ compteDestinataire.toString() +"==============");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        LOGGER.info("==================NULL VE: " + compteSource + "==============");
+        if (compteSource != null && compteDestinataire != null && montant <= compteSource.getSolde()) {
+            LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
+            LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");
+
+            gestionnaireCompte.transfererArgent(compteSource, compteDestinataire, montant);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transfert effectué avec succès", null);
+
+            LOGGER.info("==================APRES SENDER: " + compteSource.toString() + "==============");
+            LOGGER.info("================APRES RECEIVER: " + compteDestinataire.toString() + "==============");
+        } else if (compteSource != null && montant > compteSource.getSolde()) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, solde insuffisant.", null);
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, vérifier les identifiants de comptes.", null);
+        }
+
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
-}
