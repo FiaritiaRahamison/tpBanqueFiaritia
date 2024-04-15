@@ -4,10 +4,10 @@
  */
 package mg.itu.fiaritia.tpbanquefiaritia.jsf;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +19,7 @@ import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
  * @author raham
  */
 @Named(value = "listeComptes")
-@ViewScoped
+@RequestScoped
 public class ListeComptes implements Serializable {
 
     private List<CompteBancaire> allComptes;
@@ -50,18 +50,21 @@ public class ListeComptes implements Serializable {
      * 
      * @param compteBancaire
      */
-    public void supprimerCompte(CompteBancaire compteBancaire) {
+    public String supprimerCompte(CompteBancaire compteBancaire) {
         FacesMessage message = null;
         
         compteBancaire = gestionnaireCompte.findById(compteBancaire.getId());
         if (compteBancaire != null) {
             gestionnaireCompte.supprimerCompte(compteBancaire);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Supprimé avec succès.", null);
+            allComptes = this.getAllComptes();
         } else {
             message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Actualiser la page et réessayer.", null);
         }
        
         FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        return "listeComptes?faces-redirect=true";
     }
     
 }
