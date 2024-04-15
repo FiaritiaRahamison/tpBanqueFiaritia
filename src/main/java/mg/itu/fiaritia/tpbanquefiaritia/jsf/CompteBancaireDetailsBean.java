@@ -26,7 +26,8 @@ public class CompteBancaireDetailsBean implements Serializable {
 
     private int id;
     private CompteBancaire compteBancaire;
-    private String successMessage; // Message de succès
+    private String affichage;
+    
     private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
 
     @Inject
@@ -47,12 +48,12 @@ public class CompteBancaireDetailsBean implements Serializable {
         this.id = id;
     }
 
-    public String getSuccessMessage() {
-        return successMessage;
+    public String getAffichage() {
+        return affichage;
     }
 
-    public void setSuccessMessage(String successMessage) {
-        this.successMessage = successMessage;
+    public void setAffichage(String affichage) {
+        this.affichage = affichage;
     }
 
     /**
@@ -80,7 +81,7 @@ public class CompteBancaireDetailsBean implements Serializable {
      * @return String
      */
     public String afficher() {
-        return "compteBancaireDetails?id=" + id + "&faces-redirect=true";
+        return "compteBancaireDetails?id=" + id + "&affichage="+ affichage +"&faces-redirect=true";
     }
 
     /**

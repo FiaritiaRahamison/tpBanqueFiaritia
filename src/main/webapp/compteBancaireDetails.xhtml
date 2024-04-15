@@ -13,14 +13,14 @@
                 <f:metadata>
                     <f:viewParam name="titre" value="Fiche d'un compte"/>
                     <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}" required="true"/>
+                    <f:viewParam name="affichage" value="#{compteBancaireDetailsBean.affichage}" required="true"/>
                     <f:viewAction action="#{compteBancaireDetailsBean.loadCompteBancaire}" />
                 </f:metadata>
             </ui:define>
 
             <ui:define name="content">
                 <f:view>
-
-                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}" id="operation">
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null and compteBancaireDetailsBean.affichage != 'modif'}" id="operation">
                         <h1><h:outputText value="Déposer ou retirer de l'argent"/></h1>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Type d'opération" for="typeOperation" />
@@ -42,8 +42,8 @@
 
                         <h:messages />
                     </h:form>
-                    <hr style="margin-top: 40px; margin-bottom: 40px; border-width:medium;"/>
-                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}">
+                    
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null and compteBancaireDetailsBean.affichage eq 'modif'}">
                         <h1><h:outputText value="Détails / modification du nom associé au compte"/></h1>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Id:" for="id" />
