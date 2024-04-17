@@ -14,23 +14,26 @@
             <ui:define name="content">
                 <h1>Transfert</h1>
                 <h:form id="transfert">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="Compte Source:" for="idCompteSource" />
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="Compte Source:" for="compteSource" />
                         <h:inputText id="compteSource" value="#{mouvementArgent.idCompteSource}" />
-
-                        <h:outputLabel value="Compte Destinataire" for="IdCompteDestinataire" />
+                        <h:message for="compteSource"/> 
+                        
+                        <h:outputLabel value="Compte Destinataire" for="compteDestinataire" />
                         <h:inputText id="compteDestinataire" value="#{mouvementArgent.idCompteDestinataire}"/>
+                        <h:message for="compteDestinataire"/> 
                         
                         <h:outputLabel value="Montant à transférer" for="montant" />
                         <h:inputText id="montant" value="#{mouvementArgent.montant}" title="Montant à transférer" 
                                      validatorMessage="Veuillez saisir un solde positif."/>
+                        <h:message for="montant"/> 
                     </h:panelGrid>
 
                     <p><h:commandButton value="Transférer" action="#{mouvementArgent.transfert}" /></p>
 
-                    <h:messages /> 
                 </h:form>
 
+                <h:messages/>
                 <p><h:button id="back" value="Revenir à la liste" outcome="listeComptes"/></p>
             </ui:define>
 

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.TypeOperation;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
+import mg.itu.fiaritia.tpbanquefiaritia.util.Util;
 
 /**
  *
@@ -89,18 +90,37 @@ public class MouvementArgent {
 
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         CompteBancaire compteDestinataire = gestionnaireCompte.findById(idCompteDestinataire);
+        
+        if (montant < 0) {
+            Util.messageErreur("Saisir un montant positif!", "Saisir un montant positif!", "transfert:montant");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun transfert fait, saisir un montant positif.", null);
+        }
+        
         if (compteSource != null && compteDestinataire != null && montant <= compteSource.getSolde()) {
-            LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
-            LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");
+            if (compteSource.equals(compteDestinataire)) {
+                Util.messageErreur("Même id saisi!", "Même id saisi!", "transfert:compteSource");
+                Util.messageErreur("Même id saisi!", "Même id saisi!", "transfert:compteDestinataire");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun transfert fait, les comptes source et destinataire sont les mêmes..", null);
+            } else {
+                LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
+                LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");
 
-            gestionnaireCompte.transfererArgent(compteSource, compteDestinataire, montant);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transfert de "+montant+" effectué avec succès de "+compteSource.getNom()+" ID du compte: "+ compteSource.getId()+" vers "+ compteDestinataire.getNom()+" ID du compte: "+ compteDestinataire.getId()+".", null);
+                gestionnaireCompte.transfererArgent(compteSource, compteDestinataire, montant);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transfert de "+montant+" effectué avec succès de "+compteSource.getNom()+" ID du compte: "+ compteSource.getId()+" vers "+ compteDestinataire.getNom()+" ID du compte: "+ compteDestinataire.getId()+".", null);
 
-            LOGGER.info("==================APRES SENDER: " + compteSource.toString() + "==============");
-            LOGGER.info("================APRES RECEIVER: " + compteDestinataire.toString() + "==============");
-        } else if (compteSource != null && montant > compteSource.getSolde()) {
+                LOGGER.info("==================APRES SENDER: " + compteSource.toString() + "==============");
+                LOGGER.info("================APRES RECEIVER: " + compteDestinataire.toString() + "==============");
+            }
+        }
+        
+        if (compteSource != null && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, solde insuffisant.", null);
-        } else {
+            
+        }
+        
+        if (compteSource == null || compteDestinataire == null){
+            if (compteSource == null )Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "transfert:compteSource");
+            if (compteDestinataire == null )Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "transfert:compteDestinataire");
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, vérifier les identifiants de comptes.", null);
         }
 
