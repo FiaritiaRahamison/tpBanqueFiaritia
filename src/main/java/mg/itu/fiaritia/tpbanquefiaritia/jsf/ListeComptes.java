@@ -11,6 +11,7 @@ import jakarta.inject.Named;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 
@@ -66,5 +67,17 @@ public class ListeComptes implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         return "listeComptes?faces-redirect=true";
     }
+    
+    public boolean filterBySolde(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        if(filterText == null || filterText.isEmpty()) {
+           return true;
+       }
+
+        int filterAmount = Integer.parseInt(filterText);
+        int balance = ((Integer)value);
+
+        return balance >= filterAmount;
+   }
     
 }

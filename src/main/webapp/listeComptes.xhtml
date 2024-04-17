@@ -9,14 +9,14 @@
     <body>
 
         <ui:composition template="./WEB-INF/templates/default_template.xhtml">
-            
+
             <ui:define name="metadata">
                 <f:metadata>
                     <f:viewParam name="titre" value="Liste des comptes bancaires"/>
                     <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}"/>
                 </f:metadata>
             </ui:define>
-            
+
             <ui:define name="content">
                 <h1>Liste des comptes bancaires</h1>
                 <h:form>
@@ -24,11 +24,18 @@
                                  var="compte"
                                  paginator="true"
                                  rows="10"
-                                 tableStyle="width:auto" 
                                  widgetVar="comptesTable"
                                  emptyMessage="Aucun compte avec ce critère"
                                  rowsPerPageTemplate="2,4,8,10"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Recherche dans tous les champs de recherche"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('comptesTable').filter()"
+                                             style="width:400px"/>
+                            </p:outputPanel>
+                        </f:facet>
 
                         <p:column sortBy="#{compte.id}"  width="50">
                             <f:facet name="header">
@@ -37,7 +44,7 @@
                             <h:link value="#{compte.id}" outcome="#{compteBancaireDetailsBean.afficher()}">
                                 <f:param name="id" value="#{compte.id}"/>
                             </h:link>
-                            
+
                         </p:column>
 
                         <p:column sortBy="#{compte.nom}" filterBy="#{compte.nom}" filterMatchMode="contains" width="300">
@@ -47,19 +54,19 @@
                             <h:outputText value="#{compte.nom}"/>
                         </p:column>
 
-                        <p:column sortBy="#{compte.solde}" style="text-align:right;"  width="80">
+                        <p:column sortBy="#{compte.solde}" filterBy="#{compte.solde}" filterFunction="#{listeComptes.filterBySolde}" style="text-align:right;"  width="80">
                             <f:facet name="header">
                                 <h:outputText value="Solde"/>
                             </f:facet>
                             <h:outputText value="#{compte.solde}"/>
                         </p:column>
-                        
+
                         <p:column width="100">
                             <f:facet name="header">
                                 <h:outputText value="Opérations"/>
                             </f:facet>
                             <h:commandLink action="#{listeComptes.supprimerCompte(compte)}"
-                                             title="Supprimer le compte de #{compte.nom}">
+                                           title="Supprimer le compte de #{compte.nom}">
                                 <h:graphicImage name="images/del.png" />
                             </h:commandLink>
                             <h:link outcome="#{compteBancaireDetailsBean.afficher()}" title="Modifier le nom du compte de #{compte.nom}">
