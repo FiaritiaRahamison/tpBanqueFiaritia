@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
+import mg.itu.fiaritia.tpbanquefiaritia.util.Util;
 
 /**
  *  * Backing bean de la page compteBancaireDetails.xhtml.
@@ -91,17 +92,24 @@ public class CompteBancaireDetailsBean implements Serializable {
      */
     public String updateCompteBancaire() {
         FacesMessage message = null;
+        boolean erreur = false;
+        
         LOGGER.info("=============================");
         LOGGER.info(compteBancaire.toString());
         LOGGER.info("=============================");
         
         if (compteBancaire.getNom().length() != 0) {
             compteBancaire = gestionnaireCompte.updateCompteBancaire(compteBancaire);
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Modification réussie.", null);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Modification réussie.", null);
         } else {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Echec de la modification, remplir le champ `nom`.", null);
+            Util.messageErreur("Nom vide!", "Nom vide!", "details:nom");
+            erreur = true;
         }
         
+        if (erreur) {
+            return null;
+        }
         FacesContext.getCurrentInstance().addMessage(null, message);
         return "listeComptes";
     }

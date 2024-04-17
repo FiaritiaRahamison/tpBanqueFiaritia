@@ -83,17 +83,20 @@ public class MouvementArgent {
     /**
      * Transférer de l'argent d'un compte à un autre. Le compte source est
      * débité. Le compte destinataire est crédité.
-     *
+     * 
+     * @return 
      */
-    public void transfert() {
+    public String transfert() {
         FacesMessage message = null;
 
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         CompteBancaire compteDestinataire = gestionnaireCompte.findById(idCompteDestinataire);
+        boolean erreur = false;
         
         if (montant < 0) {
             Util.messageErreur("Saisir un montant positif!", "Saisir un montant positif!", "transfert:montant");
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun transfert fait, saisir un montant positif.", null);
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun transfert fait, saisir un montant positif.", null);
+            erreur = false;
         }
         
         if (compteSource != null && compteDestinataire != null && montant <= compteSource.getSolde()) {
@@ -101,6 +104,7 @@ public class MouvementArgent {
                 Util.messageErreur("Même id saisi!", "Même id saisi!", "transfert:compteSource");
                 Util.messageErreur("Même id saisi!", "Même id saisi!", "transfert:compteDestinataire");
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun transfert fait, les comptes source et destinataire sont les mêmes..", null);
+                erreur = false;
             } else {
                 LOGGER.info("==================AVANT SENDER: " + compteSource.toString() + "==============");
                 LOGGER.info("================AVANT RECEIVER: " + compteDestinataire.toString() + "==============");
@@ -115,6 +119,7 @@ public class MouvementArgent {
         
         if (compteSource != null && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, solde insuffisant.", null);
+            erreur = true;
             
         }
         
@@ -122,39 +127,61 @@ public class MouvementArgent {
             if (compteSource == null )Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "transfert:compteSource");
             if (compteDestinataire == null )Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "transfert:compteDestinataire");
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transfert échoué, vérifier les identifiants de comptes.", null);
+            erreur = true;
         }
-
+        
+        if (erreur) {
+            return null;
+        }
+        
         FacesContext.getCurrentInstance().addMessage(null, message);
+        return "listeComptes";
     }
     
     /**
      * Transférer de l'argent d'un compte à un autre. Le compte source est
      * débité. Le compte destinataire est crédité.
      *
+     * @return 
      */
     public String operation() {
         FacesMessage message = null;
+        boolean erreur = false;
+        
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> COMPTE ID: " + String.valueOf(idCompteSource) + " >>>>>>>>>>>>>>>>>>>>>");
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> AVANT OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
+        
         if (typeOperation.equals(TypeOperation.DEPOT) && montant > 0) {
             gestionnaireCompte.depot(compteSource, montant);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dépot de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant <= compteSource.getSolde()) {
             gestionnaireCompte.retrait(compteSource, montant);
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Retrait de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait échoué, solde insuffisant.", null);
             Util.messageErreur("Solde insuffisant!", "Solde insuffisant!", "operation:montant");
+            erreur = true;
         } 
         
         if (montant < 0) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Le solde doit être un nombre positif.", null);
             Util.messageErreur("Le solde doit être un nombre positif!", "Le solde doit être un nombre positif!", "operation:montant");
+            erreur = true;
         }
-        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> POST OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
-        FacesContext.getCurrentInstance().addMessage(null, message);
         
+        if (montant == 0) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Le solde doit être supérieur à 0!", null);
+            Util.messageErreur("Le solde doit être un supérieur à 0!", "Le solde doit être supérieur à 0!", "operation:montant");
+            erreur = true;
+        }
+                
+        LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> POST OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
+        
+        if (erreur) {
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, message);
         return "listeComptes";
     }
 }

@@ -55,8 +55,12 @@ public class AjouterCompte implements Serializable {
      */
     public AjouterCompte() {
     }
-    
-    public void nouveauCompte() {
+  
+    /**
+     * Ajout d'un nouveau compte bancaire
+     * @return 
+     */
+    public String nouveauCompte() {
         LOGGER.info("==================NOM: "+ nom +"==============");
         LOGGER.info("================SOLDE: "+ solde +"==============");
         boolean erreur = false;
@@ -84,6 +88,10 @@ public class AjouterCompte implements Serializable {
         }
         
         FacesContext.getCurrentInstance().addMessage(null, message);
-        //return "listeComptes?faces-redirect=true";
+        
+        if (erreur) {
+            return null;
+        }
+        return "listeComptes?faces-redirect=true";
     }
 }
