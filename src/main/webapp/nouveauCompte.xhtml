@@ -18,12 +18,15 @@
                 <f:view>
                     <h:form id="nouveauCompte">
                         <h1><h:outputText value="Création d'un nouveau compte"/></h1>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="3">
                             <h:outputLabel value="Nom:" for="nom" />
                             <h:inputText id="nom" value="#{ajouterCompte.nom}" title="Nom"/>
+                            <h:message for="nom"/> 
+                            
                             <h:outputLabel value="Solde:" for="solde" />
                             <h:inputText id="solde" value="#{ajouterCompte.solde}" title="Solde" 
                                          validatorMessage="Veuillez saisir un solde positif."/>
+                            <h:message for="solde"/> 
                         </h:panelGrid>
 
                         <p><h:commandButton value="Enregistrer" action="#{ajouterCompte.nouveauCompte}" /></p>

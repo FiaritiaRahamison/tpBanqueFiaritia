@@ -139,7 +139,7 @@ public class MouvementArgent {
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> AVANT OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
         if (typeOperation.equals(TypeOperation.DEPOT)) {
             gestionnaireCompte.depot(compteSource, montant);
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dépot de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dépot de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant <= compteSource.getSolde()) {
             gestionnaireCompte.retrait(compteSource, montant);
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);

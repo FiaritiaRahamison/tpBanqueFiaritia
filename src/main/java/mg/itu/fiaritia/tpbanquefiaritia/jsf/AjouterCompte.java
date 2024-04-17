@@ -9,10 +9,12 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import mg.itu.fiaritia.tpbanquefiaritia.entity.CompteBancaire;
 import mg.itu.fiaritia.tpbanquefiaritia.service.GestionnaireCompte;
 import java.util.logging.Logger;
+import mg.itu.fiaritia.tpbanquefiaritia.util.Util;
 /**
  *
  * @author raham
@@ -26,7 +28,7 @@ public class AjouterCompte implements Serializable {
     
     private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
 
-    //@PositiveOrZero(message = "Le solde doit être un nombre positif.")
+    @PositiveOrZero(message = "Le solde doit être un nombre positif.")
     private int solde;
     
     public String getNom() {
@@ -63,12 +65,18 @@ public class AjouterCompte implements Serializable {
         if (nom.length() == 0) {
             LOGGER.info("==================NOM VIDE ICI==============");
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aucun nom n'a été saisi !", null);
+            Util.messageErreur("Aucun nom n'a été saisi !", "Aucun nom n'a été saisi !", "nouveauCompte:nom");
             erreur = true;
-        } else if (solde < 0) {
+        } 
+        
+        if (solde < 0) {
             LOGGER.info("==================SOLDE NEGATIF ICI==============");
-            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Le solde saisi est négatif !", null);
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Inserer un solde supérieur à 0 !", null);
+            Util.messageErreur("Inserer un solde supérieur à 0 !", "Inserer un solde supérieur à 0 !", "nouveauCompte:solde");
             erreur = true;
-        } else {
+        } 
+        
+        if (solde > 0 && nom.length() > 0) {
             CompteBancaire compteBancaire = new CompteBancaire(nom, solde);
             gestionnaireCompte.creerCompte(compteBancaire);
             LOGGER.info("Compte bancaire ajouté avec succès : " + compteBancaire.toString());
