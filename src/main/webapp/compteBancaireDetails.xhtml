@@ -43,7 +43,7 @@
                         <h:messages />
                     </h:form>
                     
-                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null and compteBancaireDetailsBean.affichage eq 'modif'}">
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null and compteBancaireDetailsBean.affichage eq 'modif'}" id="details">
                         <h1><h:outputText value="Détails / modification du nom associé au compte"/></h1>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="Id:" for="id" />

@@ -137,7 +137,7 @@ public class MouvementArgent {
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> COMPTE ID: " + String.valueOf(idCompteSource) + " >>>>>>>>>>>>>>>>>>>>>");
         CompteBancaire compteSource = gestionnaireCompte.findById(idCompteSource);
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> AVANT OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
-        if (typeOperation.equals(TypeOperation.DEPOT)) {
+        if (typeOperation.equals(TypeOperation.DEPOT) && montant > 0) {
             gestionnaireCompte.depot(compteSource, montant);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dépot de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant <= compteSource.getSolde()) {
@@ -145,6 +145,12 @@ public class MouvementArgent {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait de "+ montant +" réussi pour "+ compteSource.getNom()+"// ID du compte: "+ compteSource.getId()+".", null);
         } else if (typeOperation.equals(TypeOperation.RETRAIT) && montant > compteSource.getSolde()) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrait échoué, solde insuffisant.", null);
+            Util.messageErreur("Solde insuffisant!", "Solde insuffisant!", "operation:montant");
+        } 
+        
+        if (montant < 0) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Le solde doit être un nombre positif.", null);
+            Util.messageErreur("Le solde doit être un nombre positif!", "Le solde doit être un nombre positif!", "operation:montant");
         }
         LOGGER.info(">>>>>>>>>>>>>>>>>>>>>>>> POST OP: " + compteSource.toString() + " >>>>>>>>>>>>>>>>>>>>>");
         FacesContext.getCurrentInstance().addMessage(null, message);
