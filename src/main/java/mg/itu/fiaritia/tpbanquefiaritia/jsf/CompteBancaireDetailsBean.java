@@ -27,7 +27,6 @@ public class CompteBancaireDetailsBean implements Serializable {
 
     private int id;
     private CompteBancaire compteBancaire;
-    private String affichage;
     
     private static final Logger LOGGER = Logger.getLogger(CompteBancaireDetailsBean.class.getName());
 
@@ -47,14 +46,6 @@ public class CompteBancaireDetailsBean implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getAffichage() {
-        return affichage;
-    }
-
-    public void setAffichage(String affichage) {
-        this.affichage = affichage;
     }
 
     /**
@@ -82,7 +73,7 @@ public class CompteBancaireDetailsBean implements Serializable {
      * @return String
      */
     public String afficher() {
-        return "compteBancaireDetails?id=" + id + "&affichage="+ affichage +"&faces-redirect=true";
+        return "compteBancaireDetails?id=" + id + "&faces-redirect=true";
     }
 
     /**

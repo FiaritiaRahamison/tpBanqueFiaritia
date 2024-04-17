@@ -19,29 +19,33 @@
 
             <ui:define name="content">
                 <f:view>
-                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}" id="details">
-                        <h1><h:outputText value="Détails / modification du nom associé au compte"/></h1>
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}" id="operation">
+                        <h1><h:outputText value="Déposer ou retirer de l'argent"/></h1>
                         <h:panelGrid columns="3">
-                            <h:outputLabel value="Id:" for="id" />
-                            <h:inputText id="id" value="#{compteBancaireDetailsBean.compteBancaire.id}" title="Id" readonly="true"/>
+                            <h:outputLabel value="Type d'opération" for="typeOperation" />
+                            <h:selectOneMenu id="typeOperation" value="#{mouvementArgent.typeOperation}"
+                                             title="TypeOperation"
+                                             required="true"
+                                             requiredMessage="The type operation field is required.">
+                                <f:selectItems value="#{mouvementArgent.typeOperationValues}" />
+                            </h:selectOneMenu>
                             <h:message for=""/> 
                             
-                            <h:outputLabel value="Nom:" for="nom" />
-                            <h:inputText id="nom" value="#{compteBancaireDetailsBean.compteBancaire.nom}" title="Nom" />
-                            <h:message for="nom"/> 
-                            
-                            <h:outputLabel value="Solde:" for="solde" />
-                            <h:inputText id="solde" value="#{compteBancaireDetailsBean.compteBancaire.solde}" title="Solde" readonly="true"/>
-                            <h:message for=""/> 
+                            <h:outputLabel value="Montant:" for="montant" />
+                            <h:inputText id="montant" value="#{mouvementArgent.montant}" title="Montant" />
+                            <h:message for="montant"/> 
                         </h:panelGrid>
 
-                        <p><h:commandButton value="Enregistrer la modification" action="#{compteBancaireDetailsBean.updateCompteBancaire}" /></p>
+                        <p>
+                            <h:commandButton value="Valider l'opération" action="#{mouvementArgent.operation}">
+                                <f:setPropertyActionListener target="#{mouvementArgent.idCompteSource}" value="#{compteBancaireDetailsBean.id}" />
+                            </h:commandButton>
+                        </p>
 
                         <h:messages />
                     </h:form>
-
+                    
                     <h:outputText value="Aucun compte n'a été trouvé avec cet ID #{compteBancaireDetailsBean.id} !" rendered="#{compteBancaireDetailsBean.compteBancaire == null}" />
-
                     <p><h:button id="back" value="Revenir à la liste" outcome="listeComptes"/></p>
 
                 </f:view>

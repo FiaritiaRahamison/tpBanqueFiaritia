@@ -41,7 +41,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Id"/>
                             </f:facet>
-                            <h:link value="#{compte.id}" outcome="#{compteBancaireDetailsBean.afficher()}">
+                            <h:link value="#{compte.id}" outcome="/operationCompte">
                                 <f:param name="id" value="#{compte.id}"/>
                             </h:link>
 
@@ -72,12 +72,10 @@
                             <h:link outcome="#{compteBancaireDetailsBean.afficher()}" title="Modifier le nom du compte de #{compte.nom}">
                                 <h:graphicImage name="images/modif.png" height="25px"/>
                                 <f:param name="id" value="#{compte.id}"/>
-                                <f:param name="affichage" value="modif"/>
                             </h:link>
-                            <h:link outcome="#{compteBancaireDetailsBean.afficher()}" title="Retrait ou dépot">
+                            <h:link outcome="/operationCompte" title="Retrait ou dépot">
                                 <h:graphicImage name="images/operation.png" height="25px"/>
                                 <f:param name="id" value="#{compte.id}"/>
-                                <f:param name="affichage" value="operation"/>
                             </h:link>
                         </p:column>
                     </p:dataTable>
