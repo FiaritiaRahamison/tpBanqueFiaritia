@@ -10,5 +10,6 @@ package mg.itu.fiaritia.tpbanquefiaritia.entity;
  */
 public enum TypeOperation {
     DEPOT,
-    RETRAIT
+    RETRAIT,
+    CREATION_DU_COMPTE
 }
