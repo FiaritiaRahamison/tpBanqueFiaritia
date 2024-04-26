@@ -15,6 +15,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class CompteBancaire implements Serializable {
     @Column(name = "SOLDE")
     private int solde;
 
+    @Version
+    private int version;
+    
     public Integer getId() {
         return id;
     }
@@ -69,6 +73,14 @@ public class CompteBancaire implements Serializable {
 
     public List<OperationBancaire> getOperations() {  
       return operations;  
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
     
     public CompteBancaire() {
