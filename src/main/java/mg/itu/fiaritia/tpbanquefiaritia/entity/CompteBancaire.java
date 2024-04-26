@@ -4,15 +4,20 @@
  */
 package mg.itu.fiaritia.tpbanquefiaritia.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -39,6 +44,9 @@ public class CompteBancaire implements Serializable {
         return id;
     }
 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+    private List<OperationBancaire> operations = new ArrayList<>();  
+     
     /*public void setId(Long id) {
         this.id = id;
         Il n'est pas nécessaire de modifier la clé d'une entité.
@@ -59,6 +67,10 @@ public class CompteBancaire implements Serializable {
         this.solde = solde;
     }
 
+    public List<OperationBancaire> getOperations() {  
+      return operations;  
+    }
+    
     public CompteBancaire() {
     }
 
