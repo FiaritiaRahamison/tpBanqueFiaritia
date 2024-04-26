@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/default_template.xhtml">
+
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:viewParam name="titre" value="Fiche d'un compte"/>
+                    <f:viewParam name="id" value="#{compteBancaireDetailsBean.id}" required="true"/>
+                    <f:viewAction action="#{compteBancaireDetailsBean.loadCompteBancaire}" />
+                </f:metadata>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form rendered="#{compteBancaireDetailsBean.compteBancaire != null}" id="details">
+                        <h1><h:outputText value="Historique des opérations sur le compte de #{compteBancaireDetailsBean.compteBancaire.nom}"/></h1>
+                        <p:dataTable value="#{compteBancaireDetailsBean.compteBancaire.operations}"
+                                     var="operation"
+                                     paginator="true"
+                                     rows="10"
+                                     widgetVar="comptesTable"
+                                     emptyMessage="Aucun compte avec ce critère"
+                                     rowsPerPageTemplate="2,4,8,10"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Recherche dans tous les champs de recherche"/>
+                                    <p:inputText id="globalFilter" onkeyup="PF('comptesTable').filter()"
+                                                 style="width:400px"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column sortBy="#{operation.id}"  width="50">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:link value="#{operation.id}" outcome="/operationCompte">
+                                    <f:param name="id" value="#{operation.id}"/>
+                                </h:link>
+                            </p:column>
+
+                            <p:column sortBy="#{operation.description}">
+                                <f:facet name="header">
+                                    <h:outputText value="Description"/>
+                                </f:facet>
+                                <h:outputText value="#{operation.description}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{operation.operationDate}">
+                                <f:facet name="header">
+                                    <h:outputText value="Date Opération"/>
+                                </f:facet>
+                                <h:outputText value="#{operation.operationDate}"/>
+                            </p:column>
+
+                            <p:column width="100" sortBy="#{operation.montant}" style="text-align:right;">
+                                <f:facet name="header">
+                                    <h:outputText value="Montant"/>
+                                </f:facet>
+                               <h:outputText value="#{operation.montant}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+
+
+                    <h:outputText value="Aucun compte n'a été trouvé avec cet ID #{compteBancaireDetailsBean.id} !" rendered="#{compteBancaireDetailsBean.compteBancaire == null}" />
+
+                    <p><h:button id="back" value="Revenir à la liste" outcome="listeComptes"/></p>
+
+                </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
