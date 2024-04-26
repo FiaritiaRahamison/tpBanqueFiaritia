@@ -78,6 +78,13 @@
                                 <f:param name="id" value="#{compte.id}"/>
                             </h:link>
                         </p:column>
+                        
+                        <p:column width="50">
+                            <f:facet name="header">
+                                <h:outputText escape="false" value="Historique&lt;br/>opérations"/>
+                            </f:facet>
+                            <h:link outcome="historiqueOperation?id=#{compte.id}" value="Détails" title="Détails des historiques des opérations"/>
+                        </p:column>
                     </p:dataTable>
                     <h:messages /> 
                 </h:form>
